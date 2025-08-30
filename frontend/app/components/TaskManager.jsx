@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import styles from "./TaskManager.module.scss";
+import Calendar from "./Calendar";
 
 const API_BASE = "http://localhost:8080/api/tasks";
 
@@ -52,6 +53,7 @@ export default function TaskManager() {
 
     return (
         <div className={styles.container}>
+            
             <h2 className={styles.title}>Task Manager</h2>
 
             <form onSubmit={handleSubmit} className={styles.form}>
@@ -79,6 +81,7 @@ export default function TaskManager() {
                     <div key={task.id} className={styles.taskCard}>
                         <h3>{task.title}</h3>
                         <p>{task.description}</p>
+                        <Calendar />
                         <div className={styles.actions}>
                             <button onClick={() => handleEdit(task)}>Edit</button>
                             <button

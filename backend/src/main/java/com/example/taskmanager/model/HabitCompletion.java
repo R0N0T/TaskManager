@@ -1,5 +1,6 @@
 package com.example.taskmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class HabitCompletion {
     @Setter
     @ManyToOne
     @JoinColumn(name = "habit_id")
+    @JsonBackReference
     private Habit habit;
 
     // ✅ Getters & Setters
