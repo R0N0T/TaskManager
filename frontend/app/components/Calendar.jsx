@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./Calendar.scss";
 
-const Calendar = () => {
+const Calendar = ({ habitId, completions }) => {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth(); // 0-indexed
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const daysInMonth = new Date(year, month + 1, 0).getDate(); // number of days in month
   const firstDayOfMonth = new Date(year, month, 1).getDay(); // which weekday month starts on
-  const [toggledDay, setToggledday] = useState(1);
+  const [toggledDay, setToggledday] = useState("");
   const [completedDays, setCompletedDays] = useState(new Set());
-  const api = "/habits/1/toggle?date=2025-07-24";
+
   const toggleDay = (day) => {
-    setToggledday(day); 
+    setToggledday(`${day}`);
     const newCompleted = new Set(completedDays);
     if (newCompleted.has(day)) {
       newCompleted.delete(day); // unmark
@@ -20,14 +20,21 @@ const Calendar = () => {
       newCompleted.add(day); // mark
     }
     setCompletedDays(newCompleted);
-    console.log(completedDays, month, year, "completedDays");
   };
-  
+  useEffect(() => {
+    if (completions && completions.length > 0) {
+      const days = completions.map((c) => new Date(c.date).getDate());
+      setCompletedDays(new Set(days));
+    }
+  }, []);
   useEffect(() => {
     const toggleHabit = async () => {
       try {
+        const formattedDay = String(toggledDay).padStart(2, "0");
+        const formattedMonth = String(month + 1).padStart(2, "0");
+
         const response = await fetch(
-          `http://localhost:8080/habits/1/toggle?date=${year}-0${month}-${toggledDay}`,
+          `http://localhost:8080/habits/${habitId}/toggle?date=${year}-${formattedMonth}-${formattedDay}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -39,7 +46,6 @@ const Calendar = () => {
         }
 
         const result = await response?.json();
-        console.log("Habit toggled:", result);
       } catch (error) {
         console.error("Error toggling habit:", error);
       }
