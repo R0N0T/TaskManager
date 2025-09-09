@@ -24,6 +24,4 @@ public class HabitCompletion {
     @JsonBackReference
     private Habit habit;
 
-    // ✅ Getters & Setters
-
 }

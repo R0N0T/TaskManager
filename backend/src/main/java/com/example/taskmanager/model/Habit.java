@@ -26,6 +26,4 @@ public class Habit {
     @JsonManagedReference
     private List<HabitCompletion> completions;
 
-    // ✅ Getters & Setters
-
 }
