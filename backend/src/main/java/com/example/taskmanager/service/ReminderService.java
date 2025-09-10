@@ -26,7 +26,13 @@ public class ReminderService {
         reminderRepository.deleteById(id);
     }
 
-    public Reminder updateReminder(Reminder reminder) {
+    public Reminder updateReminder(Long id, Reminder reminderDetails) {
+        Reminder reminder = reminderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reminder not found with id " + id));
+
+        reminder.setTitle(reminderDetails.getTitle());
+        reminder.setDescription(reminderDetails.getDescription());
+
         return reminderRepository.save(reminder);
     }
 }
