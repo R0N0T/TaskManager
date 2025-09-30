@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import "./Calendar.scss";
+import styles from "./Calendar.module.scss";
 
 const Calendar = ({ habitId, completions }) => {
   const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth(); // 0-indexed
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
+  
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const daysInMonth = new Date(year, month + 1, 0).getDate(); // number of days in month
-  const firstDayOfMonth = new Date(year, month, 1).getDay(); // which weekday month starts on
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDayOfMonth = new Date(year, month, 1).getDay();
   const [toggledDay, setToggledday] = useState("");
   const [completedDays, setCompletedDays] = useState(new Set());
 
@@ -57,40 +60,71 @@ const Calendar = ({ habitId, completions }) => {
   }, [completedDays]);
 
   return (
-    <div className="calendar">
-      <div className="header">
+    <div className={styles.calendar}>
+      <div className={styles.header}>
+        <button 
+          className={styles.navButton}
+          onClick={() => {
+            const newDate = new Date(year, month - 1);
+            setCurrentDate(newDate);
+          }}
+        >
+          &lt;
+        </button>
         <h2>
-          {today.toLocaleString("default", { month: "long" })} {year}
+          {currentDate.toLocaleString("default", { month: "long" })} {year}
         </h2>
+        <button 
+          className={styles.navButton}
+          onClick={() => {
+            const newDate = new Date(year, month + 1);
+            if (newDate <= today) {
+              setCurrentDate(newDate);
+            }
+          }}
+          disabled={new Date(year, month + 1) > today}
+        >
+          &gt;
+        </button>
       </div>
 
       {/* Weekday labels */}
-      <div className="weekdays">
+      <div className={styles.weekdays}>
         {daysOfWeek.map((day) => (
-          <div key={day}>{day}</div>
+          <div key={day} className={styles.weekday}>{day}</div>
         ))}
       </div>
 
       {/* Days grid */}
-      <div className="days">
+      <div className={styles.days}>
         {/* Empty slots before first day */}
         {Array.from({ length: firstDayOfMonth }).map((_, i) => (
-          <div key={`empty-${i}`} />
+          <div key={`empty-${i}`} className={styles.emptyDay} />
         ))}
 
         {/* Actual days */}
         {Array.from({ length: daysInMonth }, (_, i) => {
           const day = i + 1;
           const isCompleted = completedDays.has(day);
-          const isToday = day === today.getDate();
+          const currentDateObj = new Date(year, month, day);
+          const isToday = currentDateObj.toDateString() === today.toDateString();
+          const isFutureDate = currentDateObj > today;
+          const isCurrentMonth = currentDate.getMonth() === today.getMonth() && 
+                               currentDate.getFullYear() === today.getFullYear();
 
           return (
             <div
               key={day}
-              className={`day ${isCompleted ? "completed" : ""} ${
-                isToday ? "today" : ""
-              }`}
-              onClick={() => toggleDay(day)}
+              className={`${styles.day} 
+                ${isCompleted ? styles.completed : ""} 
+                ${isToday ? styles.today : ""} 
+                ${isFutureDate ? styles.future : ""}`}
+              onClick={() => {
+                if (!isFutureDate) {
+                  toggleDay(day);
+                  setSelectedDate(currentDateObj);
+                }
+              }}
             >
               {day}
             </div>

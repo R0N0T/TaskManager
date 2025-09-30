@@ -1,0 +1,101 @@
+// Dark theme with blue accent
+.pomodoroContainer {
+  background: #12244d;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  padding: 2.5rem 2rem;
+  max-width: 500px;
+  margin: 2rem auto;
+  color: #e6f0ff;
+}
+// Timer section
+.timerSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.timerLabel {
+  font-size: 1.2rem;
+  color: #4ea1ff;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+.timerValue {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #e6f0ff;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 8px #0a1626;
+}
+.timerControls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.timerBtn {
+  background: #4ea1ff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.timerBtn:hover {
+  background: #2566c1;
+}
+.cyclesInfo {
+  color: #b3d1ff;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.pomodoroForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.pomodoroForm input {
+  flex: 1 1 150px;
+  padding: 0.5rem;
+  border: 1px solid #2a3a5c;
+  background: #0a1626;
+  color: #e6f0ff;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.pomodoroForm button {
+  background: #4ea1ff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pomodoroForm button:disabled {
+  background: #2566c1;
+  cursor: not-allowed;
+}
+// Pomodoro session list
+.pomodoroItem {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: #1a2e5c;
+  border-radius: 6px;
+  color: #e6f0ff;
+  border: 1px solid #2a3a5c;
+}
+.success {
+  color: #4ea1ff;
+  margin-bottom: 1rem;
+}
+.error {
+  color: #ff4e6b;
+  margin-bottom: 1rem;
+}
