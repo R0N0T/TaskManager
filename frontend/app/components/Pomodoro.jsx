@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import styles from "./Pomodoro.module.scss";
+import { apiClient } from "../utils/apiClient";
 
 const API_URL = "http://localhost:8080/pomodoro";
 
@@ -25,9 +26,7 @@ const Pomodoro = () => {
 
   const fetchPomodoros = async () => {
     try {
-      const res = await fetch(API_URL);
-      if (!res.ok) throw new Error("Failed to fetch pomodoros");
-      const data = await res.json();
+      const data = await apiClient.get('/pomodoro');
       setPomodoros(Array.isArray(data) ? data : [data]);
     } catch (err) {
       setError(err.message);
@@ -112,18 +111,13 @@ const Pomodoro = () => {
     setError(null);
     setSuccess(null);
     try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          durationMinutes: Number(form.durationMinutes),
-          shortBreakMinutes: Number(form.shortBreakMinutes),
-          longBreakMinutes: Number(form.longBreakMinutes),
-          cycles: Number(form.cycles),
-        }),
+      await apiClient.post('/pomodoro', {
+        ...form,
+        durationMinutes: Number(form.durationMinutes),
+        shortBreakMinutes: Number(form.shortBreakMinutes),
+        longBreakMinutes: Number(form.longBreakMinutes),
+        cycles: Number(form.cycles),
       });
-      if (!res.ok) throw new Error("Failed to add pomodoro");
       setSuccess("Pomodoro added!");
       setForm({ title: "", durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, cycles: 4 });
       fetchPomodoros();

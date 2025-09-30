@@ -1,12 +1,12 @@
 // Dark theme with blue accent
 .pomodoroContainer {
-  background: #12244d;
+  background: var(--component-bg);
   border-radius: 12px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.18);
   padding: 2.5rem 2rem;
   max-width: 500px;
   margin: 2rem auto;
-  color: #e6f0ff;
+  color: var(--foreground);
 }
 // Timer section
 .timerSection {
@@ -24,9 +24,9 @@
 .timerValue {
   font-size: 3.5rem;
   font-weight: bold;
-  color: #e6f0ff;
+  color: var(--foreground);
   margin-bottom: 1rem;
-  text-shadow: 0 2px 8px #0a1626;
+  text-shadow: 0 2px 8px var(--background);
 }
 .timerControls {
   display: flex;

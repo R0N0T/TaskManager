@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import styles from "./Reminder.module.scss";
+import { apiClient } from '../utils/apiClient';
 
 
 const Reminder = () => {
@@ -17,12 +18,11 @@ const Reminder = () => {
   // Fetch reminders from backend
   const fetchReminders = async () => {
     try {
-      const res = await fetch('http://localhost:8080/reminders');
-      if (!res.ok) throw new Error('Failed to fetch reminders');
-      const data = await res.json();
-      setReminders(data);
+      const data = await apiClient.get('/reminders');
+      setReminders(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err.message);
+      setReminders([]);
     }
   };
 
@@ -43,19 +43,12 @@ const Reminder = () => {
       } else if (date) {
         isoDate = new Date(date).toISOString().slice(0, 10);
       }
-      const response = await fetch('http://localhost:8080/reminders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title,
-          description,
-          recurring,
-          date: isoDate,
-        }),
+      await apiClient.post('/reminders', {
+        title,
+        description,
+        recurring,
+        date: isoDate,
       });
-      if (!response.ok) throw new Error('Failed to add reminder');
       setSuccess('Reminder added successfully!');
       setTitle('');
       setDescription('');

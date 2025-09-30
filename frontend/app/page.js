@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import TaskManager from "@/app/components/TaskManager";
 import Reminder from "@/app/components/Reminder";
 import Pomodoro from "@/app/components/Pomodoro";
@@ -9,7 +9,15 @@ import Sidebar from "@/app/components/Sidebar";
 import styles from "@/app/globals-dark.module.scss"; 
 
 export default function Home() {
+  const router = useRouter();
   const [section, setSection] = useState("pomodoro");
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login');
+    }
+  }, [router]);
 
   return (
     <div className={styles.appDark}>

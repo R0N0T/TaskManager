@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Calendar.module.scss";
+import { apiClient } from '../utils/apiClient';
 
 const Calendar = ({ habitId, completions }) => {
   const today = new Date();
@@ -36,12 +37,8 @@ const Calendar = ({ habitId, completions }) => {
         const formattedDay = String(toggledDay).padStart(2, "0");
         const formattedMonth = String(month + 1).padStart(2, "0");
 
-        const response = await fetch(
-          `http://localhost:8080/habits/${habitId}/toggle?date=${year}-${formattedMonth}-${formattedDay}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-          }
+        await apiClient.post(
+          `/habits/${habitId}/toggle?date=${year}-${formattedMonth}-${formattedDay}`
         );
 
         if (!response?.ok) {

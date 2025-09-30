@@ -11,10 +11,7 @@ public class HelloController {
     @GetMapping("/hello")
     public String hello() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            return "Hello, " + username + "!";
-        }
-        throw new RuntimeException("Not authenticated");
+        String username = authentication.getName();
+        return "Hello, " + username + "!";
     }
 }

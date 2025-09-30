@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./TaskManager.module.scss";
 import Calendar from "./Calendar.jsx";
+import { apiClient } from '../utils/apiClient';
 
 const API_BASE = "http://localhost:8080/habits";
 
@@ -11,9 +12,13 @@ export default function TaskManager() {
     const [editingId, setEditingId] = useState(null);
 
     const fetchTasks = async () => {
-        const res = await fetch(API_BASE);
-        const data = await res.json();
-        setTasks(data);
+        try {
+            const data = await apiClient.get('/habits');
+            setTasks(Array.isArray(data) ? data : []);
+        } catch (error) {
+            console.error('Error fetching tasks:', error);
+            setTasks([]);
+        }
     };
 
     useEffect(() => {
@@ -29,11 +34,11 @@ export default function TaskManager() {
         e.preventDefault();
         const method = editingId ? "PUT" : "POST";
         const url = editingId ? `${API_BASE}/${editingId}` : API_BASE;
-        await fetch(url, {
-            method,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(form),
-        });
+        if (method === 'PUT') {
+            await apiClient.put(`/habits/${editingId}`, form);
+        } else {
+            await apiClient.post('/habits', form);
+        }
 
         setForm({ name: "" });
         setEditingId(null);
@@ -41,7 +46,7 @@ export default function TaskManager() {
     };
 
     const handleDelete = async (id) => {
-        await fetch(`${API_BASE}/${id}`, { method: "DELETE" });
+        await apiClient.delete(`/habits/${id}`);
         fetchTasks();
     };
 
@@ -70,7 +75,7 @@ export default function TaskManager() {
             </form>
 
             <div className={styles.taskList}>
-                {tasks.map((task) => (
+                {tasks?.map((task) => (
                     <div key={task.id} className={styles.taskCard}>
                         <h3>{task.name}</h3>
                         <Calendar 

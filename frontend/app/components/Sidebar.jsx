@@ -1,7 +1,16 @@
+"use client";
 import React from "react";
 import styles from "./Sidebar.module.scss";
+import { useAuth } from '../context/AuthContext';
 
-const Sidebar = ({ section, setSection }) => (
+const Sidebar = ({ section, setSection }) => {
+  const { logout, username } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  return (
   <aside className={styles.sidebar}>
     <h1 className={styles.logo}>Task Suite</h1>
     <nav className={styles.sidebarNav}>
@@ -31,9 +40,18 @@ const Sidebar = ({ section, setSection }) => (
       </button>
     </nav>
     <div className={styles.sidebarFooter}>
-      <span>Productivity Suite</span>
+      <div className={styles.userInfo}>
+        <span>{username || 'User'}</span>
+      </div>
+      <button
+        onClick={handleLogout}
+        className={styles.logoutButton}
+      >
+        Logout
+      </button>
     </div>
   </aside>
-);
+  );
+};
 
 export default Sidebar;
