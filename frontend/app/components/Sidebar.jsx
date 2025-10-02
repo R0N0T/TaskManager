@@ -2,6 +2,7 @@
 import React from "react";
 import styles from "./Sidebar.module.scss";
 import { useAuth } from '../context/AuthContext';
+import Link from "next/link";
 
 const Sidebar = ({ section, setSection }) => {
   const { logout, username } = useAuth();
@@ -12,32 +13,26 @@ const Sidebar = ({ section, setSection }) => {
 
   return (
   <aside className={styles.sidebar}>
-    <h1 className={styles.logo}>Task Suite</h1>
+    <Link href="/" className={styles.logo}>Task Suite</Link>
     <nav className={styles.sidebarNav}>
-      <button
-        className={
-          (styles.sidebarBtn + ' ' + (section === "pomodoro" ? styles.activeBtn : "")).trim()
-        }
-        onClick={() => setSection("pomodoro")}
+      <Link
+        href="/pomodoro"
+        className={`${styles.sidebarBtn} ${section === "pomodoro" ? styles.activeBtn : ""}`}
       >
         Pomodoro
-      </button>
-      <button
-        className={
-          (styles.sidebarBtn + ' ' + (section === "reminder" ? styles.activeBtn : "")).trim()
-        }
-        onClick={() => setSection("reminder")}
+      </Link>
+      <Link
+        href="/reminder"
+        className={`${styles.sidebarBtn} ${section === "reminder" ? styles.activeBtn : ""}`}
       >
         Reminders
-      </button>
-      <button
-        className={
-          (styles.sidebarBtn + ' ' + (section === "task" ? styles.activeBtn : "")).trim()
-        }
-        onClick={() => setSection("task")}
+      </Link>
+      <Link
+        href="/tasks"
+        className={`${styles.sidebarBtn} ${section === "task" ? styles.activeBtn : ""}`}
       >
         Task Manager
-      </button>
+      </Link>
     </nav>
     <div className={styles.sidebarFooter}>
       <div className={styles.userInfo}>

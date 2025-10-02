@@ -1,16 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import TaskManager from "@/app/components/TaskManager";
-import Reminder from "@/app/components/Reminder";
-import Pomodoro from "@/app/components/Pomodoro";
 import Sidebar from "@/app/components/Sidebar";
-import styles from "@/app/globals-dark.module.scss"; 
+import styles from "@/app/globals-dark.module.scss";
+import welcomeStyles from "@/app/welcome.module.css"; 
 
 export default function Home() {
   const router = useRouter();
-  const [section, setSection] = useState("pomodoro");
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -23,13 +20,14 @@ export default function Home() {
     <div className={styles.appDark}>
       <div className={styles.parent}>
         <div>
-          <Sidebar section={section} setSection={setSection} />
+          <Sidebar section="home" />
         </div>
         <div className={styles.child}>
           <main className="main-content">
-            {section === "pomodoro" && <Pomodoro />}
-            {section === "reminder" && <Reminder />}
-            {section === "task" && <TaskManager />}
+            <div className={welcomeStyles.welcomeContainer}>
+              <h1>Welcome to Task Suite</h1>
+              <p>Select a feature from the sidebar to get started</p>
+            </div>
           </main>
         </div>
       </div>

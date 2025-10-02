@@ -46,6 +46,7 @@ export default function TaskManager() {
     };
 
     const handleDelete = async (id) => {
+        console.log(tasks,'debug');
         await apiClient.delete(`/habits/${id}`);
         fetchTasks();
     };
@@ -88,7 +89,7 @@ export default function TaskManager() {
                                 className="delete"
                                 onClick={() => handleDelete(task.id)}
                             >
-                                Delete
+                                Deleted
                             </button>
                         </div>
                     </div>

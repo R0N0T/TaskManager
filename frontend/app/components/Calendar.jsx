@@ -5,40 +5,41 @@ import { apiClient } from '../utils/apiClient';
 const Calendar = ({ habitId, completions }) => {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
-  
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayOfMonth = new Date(year, month, 1).getDay();
-  const [toggledDay, setToggledday] = useState("");
-  const [completedDays, setCompletedDays] = useState(new Set());
+  const [toggledDate, setToggledDate] = useState("");
+  const [completedDates, setCompletedDates] = useState(new Set());
 
   const toggleDay = (day) => {
-    setToggledday(`${day}`);
-    const newCompleted = new Set(completedDays);
-    if (newCompleted.has(day)) {
-      newCompleted.delete(day); // unmark
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    setToggledDate(dateStr);
+    const newCompleted = new Set(completedDates);
+    if (newCompleted.has(dateStr)) {
+      newCompleted.delete(dateStr); // unmark
     } else {
-      newCompleted.add(day); // mark
+      newCompleted.add(dateStr); // mark
     }
-    setCompletedDays(newCompleted);
+    setCompletedDates(newCompleted);
   };
   useEffect(() => {
     if (completions && completions.length > 0) {
-      const days = completions.map((c) => new Date(c.date).getDate());
-      setCompletedDays(new Set(days));
+      const dates = completions.map((c) => {
+        const date = new Date(c.date);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      });
+      setCompletedDates(new Set(dates));
     }
   }, []);
   useEffect(() => {
     const toggleHabit = async () => {
       try {
-        const formattedDay = String(toggledDay).padStart(2, "0");
-        const formattedMonth = String(month + 1).padStart(2, "0");
+        if (!toggledDate) return;
 
         await apiClient.post(
-          `/habits/${habitId}/toggle?date=${year}-${formattedMonth}-${formattedDay}`
+          `/habits/${habitId}/toggle?date=${toggledDate}`
         );
 
         if (!response?.ok) {
@@ -51,10 +52,10 @@ const Calendar = ({ habitId, completions }) => {
       }
     };
 
-    if (completedDays.size > 0) {
+    if (toggledDate) {
       toggleHabit();
     }
-  }, [completedDays]);
+  }, [completedDates]);
 
   return (
     <div className={styles.calendar}>
@@ -102,7 +103,8 @@ const Calendar = ({ habitId, completions }) => {
         {/* Actual days */}
         {Array.from({ length: daysInMonth }, (_, i) => {
           const day = i + 1;
-          const isCompleted = completedDays.has(day);
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const isCompleted = completedDates.has(dateStr);
           const currentDateObj = new Date(year, month, day);
           const isToday = currentDateObj.toDateString() === today.toDateString();
           const isFutureDate = currentDateObj > today;
@@ -119,7 +121,6 @@ const Calendar = ({ habitId, completions }) => {
               onClick={() => {
                 if (!isFutureDate) {
                   toggleDay(day);
-                  setSelectedDate(currentDateObj);
                 }
               }}
             >

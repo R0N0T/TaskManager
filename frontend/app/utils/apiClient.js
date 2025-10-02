@@ -62,14 +62,20 @@ export const apiClient = {
     },
 
     delete: async (endpoint) => {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${BASE_URL}${endpoint}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        return handleResponse(response);
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${BASE_URL}${endpoint}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            console.log(response,"delete request");
+            return handleResponse(response);
+        } catch (error) {
+            console.error('Delete request failed:', error);
+            throw error;
+        }
     }
 };

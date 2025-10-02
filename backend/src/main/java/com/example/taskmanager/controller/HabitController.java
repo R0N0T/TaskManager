@@ -9,6 +9,7 @@ import com.example.taskmanager.repository.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -56,11 +57,21 @@ public class HabitController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteHabit(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> deleteHabit(@PathVariable Long id) {
         Habit habit = habitRepo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Habit not found"));
+
         habitRepo.delete(habit);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Habit deleted successfully");
+        response.put("deletedId", id);
+        response.put("timestamp", LocalDateTime.now());
+
+        return ResponseEntity.ok(response);  // 200 OK + JSON body
     }
+
 
     @PostMapping
     public Habit createHabit(@RequestBody Habit habit) {
