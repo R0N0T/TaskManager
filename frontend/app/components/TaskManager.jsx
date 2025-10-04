@@ -89,7 +89,7 @@ export default function TaskManager() {
                                 className="delete"
                                 onClick={() => handleDelete(task.id)}
                             >
-                                Deleted
+                                Delete
                             </button>
                         </div>
                     </div>

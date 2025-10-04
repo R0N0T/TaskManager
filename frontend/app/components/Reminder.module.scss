@@ -1,6 +1,7 @@
 // Dark theme with blue accent
 .reminder-form {
-  background: #12244d;
+  min-width: 535px;
+  background: var(--component-bg);
   border-radius: 12px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.18);
   padding: 2.5rem 2rem;
@@ -29,7 +30,7 @@
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #2a3a5c;
-  background: #0a1626;
+  background: var(--background);
   color: #e6f0ff;
   border-radius: 6px;
   font-size: 1rem;
