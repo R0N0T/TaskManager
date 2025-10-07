@@ -35,14 +35,20 @@ const Reminder = () => {
     setLoading(true);
     setSuccess(null);
     setError(null);
+
     try {
-      // Combine date and time into ISO-8601 string
-      let isoDate = '';
-      if (date && time) {
-        isoDate = new Date(`${date}T${time}`).toISOString().slice(0, 16);
-      } else if (date) {
-        isoDate = new Date(date).toISOString().slice(0, 10);
+      // Validate that selected date and time are in the future
+      const selectedDateTime = new Date(`${date}T${time}`);
+      const now = new Date();
+
+      if (selectedDateTime <= now) {
+        setError('Please select a future date and time');
+        setLoading(false);
+        return;
       }
+
+      // Combine date and time into ISO-8601 string
+      const isoDate = selectedDateTime.toISOString().slice(0, 16);
       await apiClient.post('/reminders', {
         title,
         description,
@@ -81,11 +87,37 @@ const Reminder = () => {
         </div>
         <div>
           <label>Date:</label>
-          <input type="date" value={date} onChange={e => setDate(e.target.value)} required />
+          <input 
+            type="date" 
+            value={date} 
+            onChange={e => setDate(e.target.value)}
+            min={new Date().toISOString().split('T')[0]}
+            required 
+          />
         </div>
         <div>
           <label>Time:</label>
-          <input type="time" value={time} onChange={e => setTime(e.target.value)} required />
+          <input 
+            type="time" 
+            value={time} 
+            onChange={e => {
+              const selectedDateTime = new Date(`${date}T${e.target.value}`);
+              const now = new Date();
+              
+              // If selected date is today, ensure time is in the future
+              if (date === now.toISOString().split('T')[0] && selectedDateTime <= now) {
+                setError('Please select a future time');
+                return;
+              }
+              
+              setError(null);
+              setTime(e.target.value);
+            }}
+            min={date === new Date().toISOString().split('T')[0] ? 
+              new Date().toTimeString().slice(0, 5) : 
+              undefined}
+            required 
+          />
         </div>
         <button type="submit" disabled={loading}>{loading ? 'Adding...' : 'Add Reminder'}</button>
       </form>
