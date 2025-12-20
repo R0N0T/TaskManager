@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  backend:
+    image: backend
+    container_name: taskmanager-backend
+    ports:
+      - "8080:8080"
+    networks:
+      - taskmanager-network
+
+  frontend:
+    image: webapp
+    container_name: taskmanager-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://taskmanager-backend:8080
+    depends_on:
+      - backend
+    networks:
+      - taskmanager-network
+
+networks:
+  taskmanager-network:
+    driver: bridge
