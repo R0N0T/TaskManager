@@ -19,6 +19,11 @@ const handleResponse = async (response) => {
         throw new Error(await response.text() || 'Request failed');
     }
     
+    // Handle 204 No Content
+    if (response.status === 204) {
+        return null;
+    }
+    
     return response.json();
 };
 

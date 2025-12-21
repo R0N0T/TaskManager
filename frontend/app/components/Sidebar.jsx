@@ -33,6 +33,12 @@ const Sidebar = ({ section, setSection }) => {
       >
         Task Manager
       </Link>
+      <Link
+        href="/notes"
+        className={`${styles.sidebarBtn} ${section === "notes" ? styles.activeBtn : ""}`}
+      >
+        Notes
+      </Link>
     </nav>
     <div className={styles.sidebarFooter}>
       <div className={styles.userInfo}>
