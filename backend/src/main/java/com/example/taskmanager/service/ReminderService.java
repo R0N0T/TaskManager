@@ -20,6 +20,11 @@ public class ReminderService {
     private ReminderRepository reminderRepository;
 
     public Reminder addReminder(Reminder reminder) {
+        // Initialize status as "pending" if not set
+        if (reminder.getStatus() == null) {
+            reminder.setStatus("pending");
+        }
+        
         return reminderRepository.save(reminder);
     }
 
@@ -37,6 +42,16 @@ public class ReminderService {
 
         reminder.setTitle(reminderDetails.getTitle());
         reminder.setDescription(reminderDetails.getDescription());
+        reminder.setDate(reminderDetails.getDate());
+        reminder.setTaskId(reminderDetails.getTaskId());
+        reminder.setUserId(reminderDetails.getUserId());
+        reminder.setUserEmail(reminderDetails.getUserEmail());
+        reminder.setReminderType(reminderDetails.getReminderType());
+        
+        // Don't override status if already set
+        if (reminderDetails.getStatus() != null) {
+            reminder.setStatus(reminderDetails.getStatus());
+        }
 
         return reminderRepository.save(reminder);
     }

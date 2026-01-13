@@ -27,5 +27,12 @@ public class Reminder {
     private String description;
     private LocalDateTime date;
     private Boolean recurring;
+    
+    // New fields for Kafka notification system
+    private Long taskId;
+    private Long userId;
+    private String userEmail;
+    private String reminderType; // "email" or "in-app"
+    private String status; // "pending", "sent", "failed"
 
 }
