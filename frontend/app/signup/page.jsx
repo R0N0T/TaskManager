@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/context/AuthContext';
 import styles from './page.module.scss';
+import { UserPlus, User, Lock } from 'lucide-react';
 
 export default function Signup() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function Signup() {
     confirmPassword: ''
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,6 +33,8 @@ export default function Signup() {
       setError('Passwords do not match');
       return;
     }
+
+    setLoading(true);
 
     try {
       const response = await fetch('http://localhost:8080/auth/signup', {
@@ -54,54 +58,77 @@ export default function Signup() {
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles.authContainer}>
+      <div className={styles.bgGlow} />
       <div className={styles.authCard}>
-        <h1>Sign Up</h1>
+        <div className={styles.cardHeader}>
+          <div className={styles.logoMark}>
+            <UserPlus size={24} />
+          </div>
+          <h1>Create account</h1>
+          <p>Get started with Task Suite</p>
+        </div>
+
         {error && <div className={styles.error}>{error}</div>}
+
         <form onSubmit={handleSubmit} className={styles.authForm}>
           <div className={styles.formGroup}>
             <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
+            <div className={styles.inputWrapper}>
+              <User size={16} className={styles.inputIcon} />
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Choose a username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className={styles.inputWrapper}>
+              <Lock size={16} className={styles.inputIcon} />
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create a password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
+            <div className={styles.inputWrapper}>
+              <Lock size={16} className={styles.inputIcon} />
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
-          <button type="submit" className={styles.submitBtn}>
-            Sign Up
+          <button type="submit" className={styles.submitBtn} disabled={loading}>
+            {loading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
         <p className={styles.authLink}>
-          Already have an account? <Link href="/login">Login</Link>
+          Already have an account? <Link href="/login">Sign in</Link>
         </p>
       </div>
     </div>

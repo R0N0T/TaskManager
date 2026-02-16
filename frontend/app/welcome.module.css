@@ -3,18 +3,181 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 60vh;
+  min-height: 75vh;
   text-align: center;
-  color: var(--foreground);
+  position: relative;
+  padding: 2rem;
 }
 
-.welcomeContainer h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+.welcomeGlow {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: pulse 6s ease-in-out infinite;
 }
 
-.welcomeContainer p {
-  font-size: 1.2rem;
-  color: var(--foreground);
-  opacity: 0.8;
+.heading {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  animation: slideUp 0.5s ease-out;
+}
+
+.gradient {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1, #a78bfa);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
+  animation: slideUp 0.6s ease-out;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 100%;
+  max-width: 560px;
+  animation: slideUp 0.7s ease-out;
+}
+
+.featureCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: left;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.featureCard:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2),
+              0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+.featureIcon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(139, 92, 246, 0.15);
+  border-radius: 10px;
+  color: #8b5cf6;
+  margin-bottom: 0.85rem;
+}
+
+.featureCard h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
+}
+
+.featureCard p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .heading {
+    font-size: 2.4rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .featureGrid {
+    max-width: 480px;
+  }
+
+  .featureCard {
+    padding: 1.25rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .welcomeContainer {
+    min-height: 60vh;
+    padding: 1.5rem 1rem;
+  }
+
+  .welcomeGlow {
+    width: 250px;
+    height: 250px;
+  }
+
+  .heading {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .featureGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    max-width: 100%;
+  }
+
+  .featureCard {
+    padding: 1rem;
+  }
+
+  .featureIcon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .featureCard h3 {
+    font-size: 0.9rem;
+  }
+
+  .featureCard p {
+    font-size: 0.75rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .heading {
+    font-size: 1.65rem;
+  }
+
+  .featureGrid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .featureCard {
+    padding: 1.2rem;
+  }
 }

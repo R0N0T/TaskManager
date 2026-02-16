@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Notes.module.scss";
 import { apiClient } from "../utils/apiClient";
+import { Plus, Search, Pencil, Trash2, Save, X } from "lucide-react";
 
 const API_BASE = "http://localhost:8080/notes";
 
@@ -76,37 +77,35 @@ export default function Notes() {
   };
 
   const filteredNotes = notes.filter((note) => {
-    if (!searchTerm.trim()) {
-      return true;
-    }
+    if (!searchTerm.trim()) return true;
     const searchLower = searchTerm.toLowerCase();
     return (
-      (note.noteTitle &&
-        note.noteTitle.toLowerCase().includes(searchLower)) ||
-      (note.noteContent &&
-        note.noteContent.toLowerCase().includes(searchLower))
+      (note.noteTitle && note.noteTitle.toLowerCase().includes(searchLower)) ||
+      (note.noteContent && note.noteContent.toLowerCase().includes(searchLower))
     );
   });
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Notes</h2>
-
-      <div className={styles.searchBar}>
-        <input
-          type="text"
-          placeholder="Search notes..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className={styles.searchInput}
-        />
+      <div className={styles.header}>
+        <h2 className={styles.title}>Notes</h2>
+        <div className={styles.searchBar}>
+          <Search size={16} className={styles.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search notes..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={styles.searchInput}
+          />
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"
           name="noteTitle"
-          placeholder="Note Title"
+          placeholder="Note title"
           value={form.noteTitle}
           onChange={handleChange}
           required
@@ -119,19 +118,15 @@ export default function Notes() {
           onChange={handleChange}
           required
           className={styles.contentInput}
-          rows="6"
+          rows="4"
         />
         <div className={styles.formActions}>
           <button type="submit" className={styles.submitBtn}>
-            {editingId ? "Update Note" : "Add Note"}
+            {editingId ? <><Save size={16} /> Update</> : <><Plus size={16} /> Add Note</>}
           </button>
           {editingId && (
-            <button
-              type="button"
-              className={styles.cancelBtn}
-              onClick={handleCancel}
-            >
-              Cancel
+            <button type="button" className={styles.cancelBtn} onClick={handleCancel}>
+              <X size={16} /> Cancel
             </button>
           )}
         </div>
@@ -139,24 +134,16 @@ export default function Notes() {
 
       <div className={styles.notesList}>
         {filteredNotes.length > 0 ? (
-          filteredNotes.map((note) => (
-            <div key={note.noteId} className={styles.noteCard}>
+          filteredNotes.map((note, index) => (
+            <div key={note.noteId} className={styles.noteCard} style={{ animationDelay: `${index * 0.05}s` }}>
               <div className={styles.noteHeader}>
                 <h3>{note.noteTitle}</h3>
                 <div className={styles.actions}>
-                  <button
-                    className={styles.editBtn}
-                    onClick={() => handleEdit(note)}
-                    title="Edit note"
-                  >
-                    ✏️
+                  <button className={styles.editBtn} onClick={() => handleEdit(note)} title="Edit">
+                    <Pencil size={14} />
                   </button>
-                  <button
-                    className={styles.deleteBtn}
-                    onClick={() => handleDelete(note.noteId)}
-                    title="Delete note"
-                  >
-                    🗑️
+                  <button className={styles.deleteBtn} onClick={() => handleDelete(note.noteId)} title="Delete">
+                    <Trash2 size={14} />
                   </button>
                 </div>
               </div>
@@ -170,9 +157,9 @@ export default function Notes() {
             </div>
           ))
         ) : (
-          <p className={styles.emptyState}>
-            No notes yet. Create one to get started!
-          </p>
+          <div className={styles.emptyState}>
+            <p>No notes yet. Create one to get started!</p>
+          </div>
         )}
       </div>
     </div>
