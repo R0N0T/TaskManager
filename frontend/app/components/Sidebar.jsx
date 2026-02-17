@@ -3,55 +3,53 @@ import React from "react";
 import styles from "./Sidebar.module.scss";
 import { useAuth } from '../context/AuthContext';
 import Link from "next/link";
+import { Timer, Bell, CheckSquare, FileText, Home, LogOut, User } from "lucide-react";
 
-const Sidebar = ({ section, setSection }) => {
+const navItems = [
+  { href: "/tasks", label: "Tasks", icon: CheckSquare, section: "task" },
+  { href: "/notes", label: "Notes", icon: FileText, section: "notes" },
+  { href: "/pomodoro", label: "Pomodoro", icon: Timer, section: "pomodoro" },
+  { href: "/reminder", label: "Reminders", icon: Bell, section: "reminder" },
+];
+
+const Sidebar = ({ section }) => {
   const { logout, username } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-  };
-
   return (
-  <aside className={styles.sidebar}>
-    <Link href="/" className={styles.logo}>Task Suite</Link>
-    <nav className={styles.sidebarNav}>
-      <Link
-        href="/pomodoro"
-        className={`${styles.sidebarBtn} ${section === "pomodoro" ? styles.activeBtn : ""}`}
-      >
-        Pomodoro
+    <aside className={styles.sidebar}>
+      <Link href="/" className={styles.logo}>
+        <div className={styles.logoIcon}>
+          <Home size={20} />
+        </div>
+        <span className={styles.logoText}>Task Suite</span>
       </Link>
-      <Link
-        href="/reminder"
-        className={`${styles.sidebarBtn} ${section === "reminder" ? styles.activeBtn : ""}`}
-      >
-        Reminders
-      </Link>
-      <Link
-        href="/tasks"
-        className={`${styles.sidebarBtn} ${section === "task" ? styles.activeBtn : ""}`}
-      >
-        Task Manager
-      </Link>
-      <Link
-        href="/notes"
-        className={`${styles.sidebarBtn} ${section === "notes" ? styles.activeBtn : ""}`}
-      >
-        Notes
-      </Link>
-    </nav>
-    <div className={styles.sidebarFooter}>
-      <div className={styles.userInfo}>
-        <span>{username || 'User'}</span>
+
+      <nav className={styles.nav}>
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`${styles.navItem} ${section === item.section ? styles.active : ""}`}
+          >
+            <item.icon size={18} strokeWidth={1.8} />
+            <span className={styles.navLabel}>{item.label}</span>
+          </Link>
+        ))}
+      </nav>
+
+      <div className={styles.footer}>
+        <div className={styles.userCard}>
+          <div className={styles.avatar}>
+            <User size={16} />
+          </div>
+          <span className={styles.username}>{username || 'User'}</span>
+        </div>
+        <button onClick={logout} className={styles.logoutBtn}>
+          <LogOut size={16} />
+          <span className={styles.logoutText}>Logout</span>
+        </button>
       </div>
-      <button
-        onClick={handleLogout}
-        className={styles.logoutButton}
-      >
-        Logout
-      </button>
-    </div>
-  </aside>
+    </aside>
   );
 };
 

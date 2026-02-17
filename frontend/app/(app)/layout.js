@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from 'next/navigation';
 import Sidebar from "@/app/components/Sidebar";
+import NotificationPanel from "@/app/components/NotificationPanel";
 import styles from "@/app/globals-dark.module.scss";
 
 export default function AppLayout({ children }) {
@@ -29,6 +30,9 @@ export default function AppLayout({ children }) {
           <Sidebar section={section} />
         </div>
         <div className={styles.child}>
+          <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', zIndex: 100 }}>
+            <NotificationPanel />
+          </div>
           <main className="main-content">
             {children}
           </main>

@@ -1,16 +1,15 @@
 package com.example.taskmanager.controller;
 
-import com.example.taskmanager.model.NylasMessage;
 import com.example.taskmanager.model.Reminder;
-import com.example.taskmanager.service.NylasService;
 import com.example.taskmanager.service.ReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import com.example.taskmanager.model.User;
+import com.example.taskmanager.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("/reminders")
@@ -19,31 +18,34 @@ public class ReminderController {
     @Autowired
     private ReminderService reminderService;
 
-
     @Autowired
-    private NylasService nylasService;
+    private UserRepository userRepository;
 
     @GetMapping
-    public List<Reminder> reminders() {
+    public List<Reminder> reminders(Authentication authentication) {
+        if (authentication == null)
+            return reminderService.getAllReminders();
+
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElse(null);
+
+        if (user != null) {
+            // "Upcoming" reminders = pending status
+            return reminderService.getRemindersByUserAndStatus(user.getId(), "pending");
+        }
+
         return reminderService.getAllReminders();
     }
 
     @PostMapping
-    public Reminder addReminder(@RequestBody Reminder reminder) {
-
-        Long unixTimestamp = reminderService.UTCtoUnix(reminder.getDate());
-
-        List<NylasMessage.Recipient> recipients = List.of(
-                new NylasMessage.Recipient("Leyah Miller", "rohit.rkt7398@gmail.com")
-        );
-        NylasMessage message = new NylasMessage(
-                recipients,
-                "Your Subject Here",
-                "Your email body here",
-                unixTimestamp
-        );
-
-        nylasService.sendMessage("unixTimestamp",message);
+    public Reminder addReminder(@RequestBody Reminder reminder, Authentication authentication) {
+        if (authentication != null) {
+            String username = authentication.getName();
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            reminder.setUserId(user.getId());
+            reminder.setUserEmail(username); // fallback if email is same as username
+        }
         return reminderService.addReminder(reminder);
     }
 

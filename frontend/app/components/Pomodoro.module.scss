@@ -1,102 +1,367 @@
-// Dark theme with blue accent
-.pomodoroContainer {
-  min-width: 535px;
-  background: var(--component-bg);
-  border-radius: 12px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
-  padding: 2.5rem 2rem;
-  max-width: 500px;
-  margin: 2rem auto;
-  color: var(--foreground);
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 0;
+  animation: fadeIn 0.4s ease-out;
 }
-// Timer section
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+/* Timer Section */
 .timerSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
-.timerLabel {
-  font-size: 1.2rem;
-  color: #4ea1ff;
-  margin-bottom: 0.5rem;
-  letter-spacing: 1px;
+
+.timerRing {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  margin-bottom: 1.5rem;
 }
+
+.timerContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  text-align: center;
+}
+
+.modeLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
 .timerValue {
   font-size: 3.5rem;
-  font-weight: bold;
-  color: var(--foreground);
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 8px var(--background);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
-.timerControls {
-  display: flex;
-  gap: 1rem;
+
+.cyclesInfo {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: -0.5rem;
   margin-bottom: 0.5rem;
 }
-.timerBtn {
-  background: #4ea1ff;
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1.5rem;
-  border-radius: 6px;
-  font-size: 1.1rem;
+
+.timerControls {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.controlBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+
+  &:hover {
+    background: var(--bg-surface-hover);
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+  }
+
+  &.primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px var(--accent-glow-strong);
+    }
+  }
 }
-.timerBtn:hover {
-  background: #2566c1;
+
+/* Form Section */
+.formSection {
+  margin-bottom: 2rem;
 }
-.cyclesInfo {
-  color: #b3d1ff;
+
+.sectionTitle {
   font-size: 1rem;
-  margin-top: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
 }
 
 .pomodoroForm {
   display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.formRow {
+  display: flex;
+  gap: 0.75rem;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
 }
-.pomodoroForm input {
-  flex: 1 1 150px;
-  padding: 0.5rem;
-  border: 1px solid #2a3a5c;
-  background: var(--background);
-  color: #e6f0ff;
-  border-radius: 6px;
-  font-size: 1rem;
+
+.formGroup {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border-default);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-family: var(--font-sans);
+    transition: all var(--transition-fast);
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
 }
-.pomodoroForm button {
-  background: #4ea1ff;
-  color: #fff;
+
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: white;
   border: none;
-  padding: 0.5rem 1.5rem;
-  border-radius: 6px;
-  font-size: 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px var(--accent-glow-strong);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
-.pomodoroForm button:disabled {
-  background: #2566c1;
-  cursor: not-allowed;
-}
-// Pomodoro session list
-.pomodoroItem {
-  margin-bottom: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  background: #1a2e5c;
-  border-radius: 6px;
-  color: #e6f0ff;
-  border: 1px solid #2a3a5c;
-}
+
 .success {
-  color: #4ea1ff;
-  margin-bottom: 1rem;
+  margin-top: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
 }
+
 .error {
-  color: #ff4e6b;
-  margin-bottom: 1rem;
+  margin-top: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: var(--error-bg);
+  color: var(--error);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+}
+
+/* Sessions List */
+.sessionsSection {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 1.5rem;
+}
+
+.sessionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sessionCard {
+  padding: 1rem 1.25rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+
+  &:hover {
+    border-color: var(--border-hover);
+  }
+}
+
+.sessionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+
+  strong {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+}
+
+.sessionStatus {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+.sessionMeta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem 0;
+  }
+
+  .title {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .timerRing {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 1rem;
+  }
+
+  .timerRing svg {
+    width: 200px;
+    height: 200px;
+  }
+
+  .timerValue {
+    font-size: 2.5rem;
+  }
+
+  .modeLabel {
+    font-size: 0.7rem;
+  }
+
+  .cyclesInfo {
+    font-size: 0.7rem;
+  }
+
+  .timerControls {
+    gap: 0.5rem;
+  }
+
+  .controlBtn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .pomodoroForm {
+    padding: 1rem;
+  }
+
+  .formRow {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .sessionCard {
+    padding: 0.85rem 1rem;
+  }
+
+  .sessionMeta {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .timerRing {
+    width: 180px;
+    height: 180px;
+  }
+
+  .timerRing svg {
+    width: 180px;
+    height: 180px;
+  }
+
+  .timerValue {
+    font-size: 2.2rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
 }
