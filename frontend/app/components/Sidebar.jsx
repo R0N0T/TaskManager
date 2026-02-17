@@ -3,18 +3,19 @@ import React from "react";
 import styles from "./Sidebar.module.scss";
 import { useAuth } from '../context/AuthContext';
 import Link from "next/link";
-import { Timer, Bell, CheckSquare, FileText, Home, LogOut, User } from "lucide-react";
+import { Timer, Bell, CheckSquare, FileText, Home, Trello, User, LayoutDashboard } from "lucide-react";
 
 const navItems = [
-  { href: "/tasks", label: "Tasks", icon: CheckSquare, section: "task" },
+  { href: "/", label: "Dashboard", icon: LayoutDashboard, section: "home" },
+  { href: "/tasks", label: "Tasks", icon: CheckSquare, section: "tasks" },
+  { href: "/kanban", label: "Kanban Board", icon: Trello, section: "kanban" },
+  { href: "/reminder", label: "Reminders", icon: Bell, section: "reminder" },
   { href: "/notes", label: "Notes", icon: FileText, section: "notes" },
   { href: "/pomodoro", label: "Pomodoro", icon: Timer, section: "pomodoro" },
-  { href: "/reminder", label: "Reminders", icon: Bell, section: "reminder" },
+  { href: "/profile", label: "Profile", icon: User, section: "profile" },
 ];
 
 const Sidebar = ({ section }) => {
-  const { logout, username } = useAuth();
-
   return (
     <aside className={styles.sidebar}>
       <Link href="/" className={styles.logo}>
@@ -36,21 +37,9 @@ const Sidebar = ({ section }) => {
           </Link>
         ))}
       </nav>
-
-      <div className={styles.footer}>
-        <div className={styles.userCard}>
-          <div className={styles.avatar}>
-            <User size={16} />
-          </div>
-          <span className={styles.username}>{username || 'User'}</span>
-        </div>
-        <button onClick={logout} className={styles.logoutBtn}>
-          <LogOut size={16} />
-          <span className={styles.logoutText}>Logout</span>
-        </button>
-      </div>
     </aside>
   );
 };
 
 export default Sidebar;
+

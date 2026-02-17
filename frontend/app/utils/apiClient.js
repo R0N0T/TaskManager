@@ -19,12 +19,18 @@ const handleResponse = async (response) => {
         throw new Error(await response.text() || 'Request failed');
     }
     
-    // Handle 204 No Content
-    if (response.status === 204) {
+    // Handle empty content or 204 No Content
+    const text = await response.text();
+    if (!text || response.status === 204) {
         return null;
     }
     
-    return response.json();
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        console.error("Failed to parse JSON response:", text);
+        return text;
+    }
 };
 
 export const apiClient = {
@@ -57,6 +63,19 @@ export const apiClient = {
         const token = localStorage.getItem('token');
         const response = await fetch(`${BASE_URL}${endpoint}`, {
             method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        });
+        return handleResponse(response);
+    },
+
+    patch: async (endpoint, data) => {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${BASE_URL}${endpoint}`, {
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`

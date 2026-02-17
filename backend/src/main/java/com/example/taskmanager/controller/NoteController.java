@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notes") // Sets the base path for ALL methods to "/notes"
+@RequestMapping("/api/notes") // Sets the base path for ALL methods to "/api/notes"
 public class NoteController {
 
     private final NoteService noteService;

@@ -38,15 +38,9 @@ const Calendar = ({ habitId, completions }) => {
       try {
         if (!toggledDate) return;
 
-        await apiClient.post(
-          `/habits/${habitId}/toggle?date=${toggledDate}`
+        const response = await apiClient.post(
+          `/api/habits/${habitId}/toggle?date=${toggledDate}`
         );
-
-        if (!response?.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
-        }
-
-        const result = await response?.json();
       } catch (error) {
         console.error("Error toggling habit:", error);
       }

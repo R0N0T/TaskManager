@@ -23,7 +23,7 @@ const Pomodoro = () => {
 
   const fetchPomodoros = async () => {
     try {
-      const data = await apiClient.get('/pomodoro');
+      const data = await apiClient.get('/api/pomodoro');
       setPomodoros(Array.isArray(data) ? data : [data]);
     } catch (err) {
       setError(err.message);
@@ -102,7 +102,7 @@ const Pomodoro = () => {
     setError(null);
     setSuccess(null);
     try {
-      await apiClient.post('/pomodoro', {
+      await apiClient.post('/api/pomodoro', {
         ...form,
         durationMinutes: Number(form.durationMinutes),
         shortBreakMinutes: Number(form.shortBreakMinutes),

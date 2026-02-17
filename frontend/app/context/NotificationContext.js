@@ -27,7 +27,7 @@ export function NotificationProvider({ children }) {
     const fetchNotifications = useCallback(async () => {
         if (!userId) return;
         try {
-            const data = await apiClient.get(`/notifications?userId=${userId}`);
+            const data = await apiClient.get(`/api/notifications?userId=${userId}`);
             setNotifications(data || []);
         } catch (err) {
             console.error('Failed to fetch notifications:', err);
@@ -37,7 +37,7 @@ export function NotificationProvider({ children }) {
     const fetchUnreadCount = useCallback(async () => {
         if (!userId) return;
         try {
-            const data = await apiClient.get(`/notifications/unread-count?userId=${userId}`);
+            const data = await apiClient.get(`/api/notifications/unread-count?userId=${userId}`);
             setUnreadCount(data?.count || 0);
         } catch (err) {
             console.error('Failed to fetch unread count:', err);
@@ -110,7 +110,7 @@ export function NotificationProvider({ children }) {
 
     const markAsRead = useCallback(async (notificationId) => {
         try {
-            await apiClient.put(`/notifications/${notificationId}/read`);
+            await apiClient.put(`/api/notifications/${notificationId}/read`);
             setNotifications(prev =>
                 prev.map(n => n.id === notificationId ? { ...n, read: true } : n)
             );
@@ -123,7 +123,7 @@ export function NotificationProvider({ children }) {
     const markAllAsRead = useCallback(async () => {
         if (!userId) return;
         try {
-            await apiClient.put(`/notifications/read-all?userId=${userId}`);
+            await apiClient.put(`/api/notifications/read-all?userId=${userId}`);
             setNotifications(prev => prev.map(n => ({ ...n, read: true })));
             setUnreadCount(0);
         } catch (err) {

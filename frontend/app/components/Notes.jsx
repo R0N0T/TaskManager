@@ -14,7 +14,7 @@ export default function Notes() {
 
   const fetchNotes = async () => {
     try {
-      const data = await apiClient.get("/notes");
+      const data = await apiClient.get("/api/notes");
       setNotes(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching notes:", error);
@@ -41,9 +41,9 @@ export default function Notes() {
 
     try {
       if (editingId) {
-        await apiClient.put(`/notes/${editingId}`, form);
+        await apiClient.put(`/api/notes/${editingId}`, form);
       } else {
-        await apiClient.post("/notes", form);
+        await apiClient.post("/api/notes", form);
       }
       setForm({ noteTitle: "", noteContent: "" });
       setEditingId(null);
@@ -57,7 +57,7 @@ export default function Notes() {
   const handleDelete = async (id) => {
     if (confirm("Are you sure you want to delete this note?")) {
       try {
-        await apiClient.delete(`/notes/${id}`);
+        await apiClient.delete(`/api/notes/${id}`);
         setNotes((prevNotes) => prevNotes.filter((note) => note.noteId !== id));
         setSearchTerm("");
       } catch (error) {

@@ -2,27 +2,28 @@
 
 :root {
   /* — Color Palette (HSL-based) — */
-  --bg-primary: #09090b;
-  --bg-secondary: #111114;
-  --bg-surface: rgba(255, 255, 255, 0.03);
-  --bg-surface-hover: rgba(255, 255, 255, 0.06);
-  --bg-surface-active: rgba(255, 255, 255, 0.08);
+  --bg-primary: #0f172a;
+  --bg-secondary: #0b1121;
+  --bg-surface: #172b46;
+  --bg-surface-hover: #1e3a5f;
+  --bg-surface-active: #254a78;
 
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.1);
-  --border-hover: rgba(255, 255, 255, 0.15);
-  --border-active: rgba(139, 92, 246, 0.5);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-default: rgba(107, 175, 183, 0.2);
+  --border-hover: rgba(107, 175, 183, 0.4);
+  --border-active: #6bafb7;
 
-  --text-primary: #fafafa;
-  --text-secondary: #a1a1aa;
-  --text-muted: #52525b;
-  --text-inverse: #09090b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
 
-  --accent-primary: #8b5cf6;
-  --accent-primary-hover: #7c3aed;
-  --accent-secondary: #6366f1;
-  --accent-glow: rgba(139, 92, 246, 0.15);
-  --accent-glow-strong: rgba(139, 92, 246, 0.3);
+  --accent-primary: #6bafb7;
+  --accent-primary-hover: #5a9ca4;
+  --accent-secondary: #3b82f6;
+  --accent-glow: rgba(107, 175, 183, 0.15);
+  --accent-glow-strong: rgba(107, 175, 183, 0.3);
+
 
   --success: #22c55e;
   --success-bg: rgba(34, 197, 94, 0.1);

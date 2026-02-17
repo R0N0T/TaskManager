@@ -17,7 +17,7 @@ const Reminder = () => {
 
   const fetchReminders = async () => {
     try {
-      const data = await apiClient.get('/reminders');
+      const data = await apiClient.get('/api/reminders');
       setReminders(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err.message);
@@ -69,7 +69,7 @@ const Reminder = () => {
       const hours = String(selectedDateTime.getHours()).padStart(2, '0');
       const minutes = String(selectedDateTime.getMinutes()).padStart(2, '0');
       const localDate = `${year}-${month}-${day}T${hours}:${minutes}`;
-      await apiClient.post('/reminders', {
+      await apiClient.post('/api/reminders', {
         title,
         description,
         recurring,

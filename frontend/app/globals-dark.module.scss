@@ -13,15 +13,14 @@
 
   .child {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
     width: 100%;
-    padding: var(--content-padding);
     margin-left: var(--sidebar-width);
     min-height: 100vh;
     animation: fadeIn 0.4s ease-out;
   }
 }
+
 
 /* Tablet */
 @media (max-width: 1024px) {
