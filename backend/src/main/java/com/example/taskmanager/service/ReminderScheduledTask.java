@@ -23,51 +23,101 @@ public class ReminderScheduledTask {
     private ReminderRepository reminderRepository;
 
     @Autowired
-    private KafkaProducerService kafkaProducerService;
+    private WebSocketNotificationService webSocketNotificationService;
+
+    @Autowired
+    private ReminderNotificationService reminderNotificationService;
 
     /**
-     * Runs every minute to check for due reminders and publish them to Kafka
-     * Cron expression: 0 * * * * * (every minute at the 0th second)
+     * Runs every minute to check for due reminders.
      */
     @Scheduled(cron = "0 * * * * *")
     public void checkAndPublishDueReminders() {
-        logger.info("Starting scheduled task to check for due reminders...");
-
         try {
-            // Get current time
             LocalDateTime now = LocalDateTime.now();
-
-            // Fetch all pending reminders that are due
             List<Reminder> dueReminders = reminderRepository.findByStatusAndDateBefore("pending", now);
 
-            if (dueReminders.isEmpty()) {
-                logger.debug("No due reminders found");
+            if (dueReminders.isEmpty())
                 return;
-            }
 
-            logger.info("Found {} due reminders to process", dueReminders.size());
-
-            // Process each due reminder
             for (Reminder reminder : dueReminders) {
                 try {
-                    // Convert Reminder to ReminderEvent
+                    // Send notification
                     ReminderEvent event = convertToReminderEvent(reminder);
+                    webSocketNotificationService.sendNotification(event);
 
-                    // Publish to Kafka
-                    kafkaProducerService.publishReminderEvent(event);
-
-                    logger.info("Published reminder {} to Kafka", reminder.getId());
+                    // Handle Recurring vs One-time
+                    if (Boolean.TRUE.equals(reminder.getRecurring()) && reminder.getDaysOfWeek() != null
+                            && !reminder.getDaysOfWeek().isEmpty()) {
+                        handleRecurringReschedule(reminder);
+                    } else {
+                        // Mark as sent
+                        reminderNotificationService.updateReminderStatus(reminder.getId(), "sent");
+                    }
 
                 } catch (Exception e) {
-                    logger.error("Failed to process reminder with ID: {}", reminder.getId(), e);
+                    logger.error("Failed to process reminder {}", reminder.getId(), e);
+                    try {
+                        reminderNotificationService.updateReminderStatus(reminder.getId(), "failed");
+                    } catch (Exception ignored) {
+                    }
                 }
             }
+        } catch (Exception e) {
+            logger.error("Error in scheduled task", e);
+        }
+    }
 
-            logger.info("Scheduled task completed. Processed {} reminders", dueReminders.size());
+    private void handleRecurringReschedule(Reminder reminder) {
+        try {
+            LocalDateTime nextDate = calculateNextOccurrence(reminder.getDate(), reminder.getDaysOfWeek());
+            reminder.setDate(nextDate);
+            reminder.setStatus("pending");
+            reminderRepository.save(reminder);
 
         } catch (Exception e) {
-            logger.error("Error in scheduled task for checking due reminders", e);
+            logger.error("Failed to reschedule reminder {}", reminder.getId(), e);
+            reminder.setStatus("failed");
+            reminderRepository.save(reminder);
         }
+    }
+
+    private LocalDateTime calculateNextOccurrence(LocalDateTime current, String daysOfWeekStr) {
+        // Parse days: "MON,TUE,WED"
+        java.util.Set<java.time.DayOfWeek> selectedDays = new java.util.HashSet<>();
+        for (String day : daysOfWeekStr.split(",")) {
+            try {
+                // Map "MON" -> MONDAY
+                String normalized = day.trim().toUpperCase();
+                // Handle 3-letter (MON) or full (MONDAY)
+                if (normalized.length() == 3) {
+                    // Start of day
+                    // Simple mapping or iterate enum
+                    for (java.time.DayOfWeek d : java.time.DayOfWeek.values()) {
+                        if (d.name().startsWith(normalized)) {
+                            selectedDays.add(d);
+                            break;
+                        }
+                    }
+                } else {
+                    selectedDays.add(java.time.DayOfWeek.valueOf(normalized));
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
+        if (selectedDays.isEmpty())
+            return current.plusDays(1); // Fallback
+
+        LocalDateTime next = current;
+        // Search for next occurrence within next 8 days
+        for (int i = 1; i <= 8; i++) {
+            next = next.plusDays(1);
+            if (selectedDays.contains(next.getDayOfWeek())) {
+                return next;
+            }
+        }
+        return current.plusDays(1); // Fallback
     }
 
     /**

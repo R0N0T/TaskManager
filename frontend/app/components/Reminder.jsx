@@ -29,6 +29,17 @@ const Reminder = () => {
     fetchReminders();
   }, []);
 
+  const [daysOfWeek, setDaysOfWeek] = useState([]);
+  const DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+
+  const toggleDay = (day) => {
+    if (daysOfWeek.includes(day)) {
+      setDaysOfWeek(daysOfWeek.filter(d => d !== day));
+    } else {
+      setDaysOfWeek([...daysOfWeek, day]);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -36,6 +47,12 @@ const Reminder = () => {
     setError(null);
 
     try {
+      if (recurring && daysOfWeek.length === 0) {
+        setError('Please select at least one day for recurring reminder');
+        setLoading(false);
+        return;
+      }
+
       const selectedDateTime = new Date(`${date}T${time}`);
       const now = new Date();
 
@@ -45,17 +62,25 @@ const Reminder = () => {
         return;
       }
 
-      const isoDate = selectedDateTime.toISOString().slice(0, 16);
+      // Format as local datetime (YYYY-MM-DDTHH:mm) without UTC conversion
+      const year = selectedDateTime.getFullYear();
+      const month = String(selectedDateTime.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDateTime.getDate()).padStart(2, '0');
+      const hours = String(selectedDateTime.getHours()).padStart(2, '0');
+      const minutes = String(selectedDateTime.getMinutes()).padStart(2, '0');
+      const localDate = `${year}-${month}-${day}T${hours}:${minutes}`;
       await apiClient.post('/reminders', {
         title,
         description,
         recurring,
-        date: isoDate,
+        daysOfWeek: recurring ? daysOfWeek.join(',') : null,
+        date: localDate,
       });
       setSuccess('Reminder added successfully!');
       setTitle('');
       setDescription('');
       setRecurring(false);
+      setDaysOfWeek([]);
       setDate('');
       setTime('');
       fetchReminders();
@@ -140,6 +165,22 @@ const Reminder = () => {
               <span className={styles.toggleThumb} />
             </button>
           </div>
+          
+          {recurring && (
+            <div className={styles.daySelector}>
+              {DAYS.map(day => (
+                <button
+                  key={day}
+                  type="button"
+                  className={`${styles.dayBtn} ${daysOfWeek.includes(day) ? styles.dayActive : ''}`}
+                  onClick={() => toggleDay(day)}
+                >
+                  {day.charAt(0)}
+                </button>
+              ))}
+            </div>
+          )}
+
           <button type="submit" className={styles.submitBtn} disabled={loading}>
             <Plus size={16} /> {loading ? 'Adding...' : 'Add Reminder'}
           </button>

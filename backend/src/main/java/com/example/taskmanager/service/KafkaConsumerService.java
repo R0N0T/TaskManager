@@ -13,41 +13,28 @@ public class KafkaConsumerService {
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerService.class);
 
     @Autowired
-    private EmailNotificationService emailNotificationService;
+    private WebSocketNotificationService webSocketNotificationService;
 
     @Autowired
     private ReminderNotificationService reminderNotificationService;
 
     /**
-     * Listens to the "reminders" topic
+     * Listens to the "reminders" topic.
      * Consumer group: "notification-service"
-     * Processes each reminder event and sends notifications
+     * All reminder events are now routed to WebSocket in-app notifications.
      */
-    @KafkaListener(
-            topics = "reminders",
-            groupId = "notification-service",
-            containerFactory = "kafkaListenerContainerFactory"
-    )
+    @KafkaListener(topics = "reminders", groupId = "notification-service", containerFactory = "kafkaListenerContainerFactory")
     public void consumeReminderEvent(ReminderEvent reminderEvent) {
         logger.info("Received reminder event from Kafka: {}", reminderEvent.getReminderId());
 
         try {
-            // Validate the event
             if (reminderEvent == null || reminderEvent.getReminderId() == null) {
                 logger.error("Invalid reminder event received");
                 return;
             }
 
-            // Send notification based on reminder type
-            if ("email".equalsIgnoreCase(reminderEvent.getReminderType())) {
-                logger.info("Sending email notification for reminder: {}", reminderEvent.getReminderId());
-                emailNotificationService.sendEmailNotification(reminderEvent);
-            } else if ("in-app".equalsIgnoreCase(reminderEvent.getReminderType())) {
-                logger.info("Sending in-app notification for reminder: {}", reminderEvent.getReminderId());
-                reminderNotificationService.sendInAppNotification(reminderEvent);
-            } else {
-                logger.warn("Unknown reminder type: {}", reminderEvent.getReminderType());
-            }
+            // Send in-app notification via WebSocket
+            webSocketNotificationService.sendNotification(reminderEvent);
 
             // Update reminder status to "sent"
             reminderNotificationService.updateReminderStatus(reminderEvent.getReminderId(), "sent");
@@ -56,7 +43,6 @@ public class KafkaConsumerService {
         } catch (Exception e) {
             logger.error("Error processing reminder event with ID: {}", reminderEvent.getReminderId(), e);
             try {
-                // Update status to "failed"
                 reminderNotificationService.updateReminderStatus(reminderEvent.getReminderId(), "failed");
             } catch (Exception statusUpdateError) {
                 logger.error("Failed to update reminder status to 'failed'", statusUpdateError);

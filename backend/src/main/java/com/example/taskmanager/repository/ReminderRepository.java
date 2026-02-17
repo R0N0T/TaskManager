@@ -11,9 +11,12 @@ import java.util.List;
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
 
     /**
-     * Find all reminders with given status that are due (date is before or equal to now)
+     * Find all reminders with given status that are due (date is before or equal to
+     * now)
      */
     @Query("SELECT r FROM Reminder r WHERE r.status = :status AND r.date <= :now")
     List<Reminder> findByStatusAndDateBefore(@Param("status") String status, @Param("now") LocalDateTime now);
+
+    List<Reminder> findByUserIdAndStatus(Long userId, String status);
 
 }

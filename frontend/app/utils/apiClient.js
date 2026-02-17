@@ -76,7 +76,6 @@ export const apiClient = {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            console.log(response,"delete request");
             return handleResponse(response);
         } catch (error) {
             console.error('Delete request failed:', error);

@@ -136,6 +136,41 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
+.daySelector {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.1rem;
+  justify-content: space-between;
+}
+
+.dayBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  &.dayActive {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }
+}
+
 .submitBtn {
   display: flex;
   align-items: center;
