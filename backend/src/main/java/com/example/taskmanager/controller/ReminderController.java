@@ -12,7 +12,7 @@ import com.example.taskmanager.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 
 @RestController
-@RequestMapping("/reminders")
+@RequestMapping("/api/reminders")
 public class ReminderController {
 
     @Autowired

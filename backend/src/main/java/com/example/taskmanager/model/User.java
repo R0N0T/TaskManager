@@ -1,4 +1,5 @@
 package com.example.taskmanager.model;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,5 +18,10 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role;  // e.g. ROLE_USER, ROLE_ADMIN
+    private String role; // e.g. ROLE_USER, ROLE_ADMIN
+
+    @Column(unique = true)
+    private String email;
+
+    private String avatarUrl;
 }

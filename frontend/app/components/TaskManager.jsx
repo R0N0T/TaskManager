@@ -5,8 +5,6 @@ import Calendar from "./Calendar.jsx";
 import { apiClient } from '../utils/apiClient';
 import { Plus, Pencil, Trash2, Save } from 'lucide-react';
 
-const API_BASE = "http://localhost:8080/habits";
-
 export default function TaskManager() {
     const [tasks, setTasks] = useState([]);
     const [form, setForm] = useState({ name: "" });
@@ -14,7 +12,7 @@ export default function TaskManager() {
 
     const fetchTasks = async () => {
         try {
-            const data = await apiClient.get('/habits');
+            const data = await apiClient.get('/api/habits');
             setTasks(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error('Error fetching tasks:', error);
@@ -36,9 +34,9 @@ export default function TaskManager() {
         const method = editingId ? "PUT" : "POST";
         const url = editingId ? `${API_BASE}/${editingId}` : API_BASE;
         if (method === 'PUT') {
-            await apiClient.put(`/habits/${editingId}`, form);
+            await apiClient.put(`/api/habits/${editingId}`, form);
         } else {
-            await apiClient.post('/habits', form);
+            await apiClient.post('/api/habits', form);
         }
 
         setForm({ name: "" });
@@ -47,7 +45,7 @@ export default function TaskManager() {
     };
 
     const handleDelete = async (id) => {
-        await apiClient.delete(`/habits/${id}`);
+        await apiClient.delete(`/api/habits/${id}`);
         fetchTasks();
     };
 

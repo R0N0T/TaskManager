@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
-@RequestMapping("/habits")
+@RequestMapping("/api/habits")
 public class HabitController {
 
     private final HabitRepository habitRepo;
@@ -69,9 +69,8 @@ public class HabitController {
         response.put("deletedId", id);
         response.put("timestamp", LocalDateTime.now());
 
-        return ResponseEntity.ok(response);  // 200 OK + JSON body
+        return ResponseEntity.ok(response); // 200 OK + JSON body
     }
-
 
     @PostMapping
     public Habit createHabit(@RequestBody Habit habit) {
@@ -94,4 +93,3 @@ public class HabitController {
         }
     }
 }
-

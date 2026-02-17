@@ -8,27 +8,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/pomodoro")
 public class PomodoroController {
 
     @Autowired
     private PomodoroService pomodoroService;
 
-    @GetMapping({"/pomodoro"})
+    @GetMapping
     public List<Pomodoro> getPomodoro() {
         return pomodoroService.getAllPomodoros();
     }
 
-    @PostMapping({"/pomodoro"})
+    @PostMapping
     public Pomodoro addPomodoro(@RequestBody Pomodoro pomodoro) {
         return pomodoroService.addPomodoro(pomodoro);
     }
 
-    @PutMapping({"/pomodoro"})
+    @PutMapping
     public Pomodoro updatePomodoro(@RequestBody Pomodoro pomodoro) {
         return pomodoroService.updatePomodoro(pomodoro);
     }
 
-    @DeleteMapping({"/pomodoro/{id}"})
+    @DeleteMapping("/{id}")
     public void deletePomodoro(@PathVariable Long id) {
         pomodoroService.deletePomodoro(id);
     }
