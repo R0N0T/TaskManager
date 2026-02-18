@@ -17,30 +17,46 @@ A comprehensive task management application with real-time updates and push noti
 
 ## Technology Stack
 
--   **Backend**: Java 21, Spring Boot 3.5.3, Spring Security (JWT), Spring WebSocket (Stomp), Web Push (VAPID), H2 Database.
+-   **Backend**: Java 21, Spring Boot 3.5.3, Spring Security (JWT), Spring WebSocket (Stomp), Web Push (VAPID).
 -   **Frontend**: Next.js 14, React, Tailwind CSS (or SCSS modules), SockJS, Lucide React.
--   **Database**: H2 (In-memory for dev/test).
+-   **Infrastructure**: Docker, PostgreSQL, Redis, Kafka, Zookeeper.
 
 ## Setup & Installation
 
 ### Prerequisites
 -   Java 21+
 -   Node.js 18+
--   Maven
+-   Docker Desktop
 
-### 1. Backend Setup
+### Quick Start (Single Command)
 
-```bash
+We have provided a PowerShell script to start everything (Docker + Backend + Frontend) in one go:
+
+```powershell
+.\start_app.ps1
+```
+
+### Manual Setup
+
+Start the required services (Postgres, Redis, Kafka, Zookeeper) using Docker:
+
+```powershell
+docker-compose up -d
+```
+
+### 2. Backend Setup
+
+```powershell
 cd backend
 mvn spring-boot:run
 ```
 
 The server will start on `http://localhost:8080`.
-H2 Console available at `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:testdb`, User: `sa`, Password: `password`).
+Flyway will automatically migrate the database schema on startup.
 
-### 2. Frontend Setup
+### 3. Frontend Setup
 
-```bash
+```powershell
 cd frontend
 npm install
 npm run dev
@@ -48,7 +64,7 @@ npm run dev
 
 The application will be available at `http://localhost:3000`.
 
-### 3. Web Push Configuration (VAPID) [Included]
+### 4. Web Push Configuration (VAPID) [Included]
 
 The application uses the Web Push API. VAPID keys are configured in `backend/src/main/resources/application.properties`.
 

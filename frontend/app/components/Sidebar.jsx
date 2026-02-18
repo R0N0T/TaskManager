@@ -1,43 +1,96 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Sidebar.module.scss";
-import { useAuth } from '../context/AuthContext';
 import Link from "next/link";
-import { Timer, Bell, CheckSquare, FileText, Home, Trello, User, LayoutDashboard } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Timer, Bell, CheckSquare, FileText, Home, Trello, User, 
+  LayoutDashboard, Settings, ChevronLeft, ChevronRight 
+} from "lucide-react";
+import clsx from "clsx";
 
 const navItems = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard, section: "home" },
-  { href: "/tasks", label: "Tasks", icon: CheckSquare, section: "tasks" },
-  { href: "/kanban", label: "Kanban Board", icon: Trello, section: "kanban" },
-  { href: "/reminder", label: "Reminders", icon: Bell, section: "reminder" },
-  { href: "/notes", label: "Notes", icon: FileText, section: "notes" },
-  { href: "/pomodoro", label: "Pomodoro", icon: Timer, section: "pomodoro" },
-  { href: "/profile", label: "Profile", icon: User, section: "profile" },
+  { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/tasks", label: "Tasks", icon: CheckSquare },
+  { href: "/kanban", label: "Kanban Board", icon: Trello },
+  { href: "/reminder", label: "Reminders", icon: Bell },
+  { href: "/notes", label: "Notes", icon: FileText },
+  { href: "/pomodoro", label: "Pomodoro", icon: Timer },
+  { href: "/profile", label: "Profile", icon: User },
+  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-const Sidebar = ({ section }) => {
+const Sidebar = () => {
+  const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
-    <aside className={styles.sidebar}>
-      <Link href="/" className={styles.logo}>
-        <div className={styles.logoIcon}>
-          <Home size={20} />
-        </div>
-        <span className={styles.logoText}>Task Suite</span>
-      </Link>
+    <motion.aside 
+      className={styles.sidebar}
+      initial={{ width: 260 }}
+      animate={{ width: isCollapsed ? 80 : 260 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+    >
+      <div className={styles.header}>
+        <Link href="/" className={styles.logo}>
+          <div className={styles.logoIcon}>
+            <Home size={20} />
+          </div>
+          <AnimatePresence>
+            {!isCollapsed && (
+              <motion.span 
+                className={styles.logoText}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+              >
+                Task Suite
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </Link>
+        
+        <button 
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className={styles.collapseBtn}
+        >
+          {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
+      </div>
 
       <nav className={styles.nav}>
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`${styles.navItem} ${section === item.section ? styles.active : ""}`}
-          >
-            <item.icon size={18} strokeWidth={1.8} />
-            <span className={styles.navLabel}>{item.label}</span>
-          </Link>
-        ))}
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={clsx(styles.navItem, isActive && styles.active)}
+            >
+              <item.icon size={20} className={styles.icon} />
+              {!isCollapsed && (
+                <motion.span 
+                  className={styles.navLabel}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {item.label}
+                </motion.span>
+              )}
+              {isActive && (
+                <motion.div 
+                  className={styles.activeIndicator}
+                  layoutId="activeIndicator"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+            </Link>
+          );
+        })}
       </nav>
-    </aside>
+    </motion.aside>
   );
 };
 

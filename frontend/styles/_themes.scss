@@ -1,0 +1,147 @@
+@use 'variables' as *;
+
+:root {
+  /* — Light Mode (Default) — */
+  --background: 0 0% 98%;         /* #f9f9f9 */
+  --foreground: 0 0% 7%;          /* #111111 */
+
+  --card: 0 0% 100%;              /* #ffffff */
+  --card-foreground: 0 0% 7%;     /* #111111 */
+
+  --popover: 0 0% 100%;           /* #ffffff */
+  --popover-foreground: 0 0% 7%;
+
+  --primary: 183 36% 57%;         /* #6bafb7 (Teal) */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 0 0% 96%;          /* #f5f5f5 */
+  --secondary-foreground: 0 0% 33%; /* #555555 */
+
+  --muted: 0 0% 96%;              /* #f5f5f5 */
+  --muted-foreground: 0 0% 33%;   /* #555555 */
+
+  --accent: 183 36% 57%;          /* #6bafb7 */
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84% 60%;       /* #ef4444 */
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 0 0% 88%;             /* #e0e0e0 (Card Border) */
+  --input: 0 0% 88%;
+  --ring: 183 36% 57%;
+
+  --radius-sm: 0.5rem;            /* 8px */
+  --radius-md: 0.75rem;           /* 12px */
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+  --radius: 0.5rem;               /* 8px default */
+  
+  /* Sidebar Specific */
+  --sidebar-bg: 0 0% 100%;        /* #ffffff */
+  --sidebar-fg: 0 0% 7%;          /* #111111 */
+  --sidebar-border: 0 0% 92%;     /* #ebebeb */
+
+  /* — Surface Colors (Light) — */
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f1f5f9;
+  --bg-surface-active: #e2e8f0;
+
+  --border-subtle: #dcdcdc;       /* #dcdcdc (Generic Border) */
+  --border-default: #dcdcdc;      /* #dcdcdc */
+  --border-hover: #b0b0b0;
+  --border-active: #6bafb7;
+
+  --text-primary: #111111;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --text-inverse: #ffffff;
+
+  --accent-primary: #6bafb7;
+  --accent-primary-hover: #5a9ca4;
+  --accent-secondary: #3b82f6;
+  --accent-light: #a5f3fc; /* Cyan-200 for gradient */
+  --accent-glow: rgba(107, 175, 183, 0.15);
+  --accent-glow-strong: rgba(107, 175, 183, 0.3);
+
+  /* — RGB Channels for Opacity — */
+  --primary-rgb: 107, 175, 183;
+  --success-rgb: 34, 197, 94;
+  --warning-rgb: 245, 158, 11;
+  --error-rgb: 239, 68, 68;
+  --accent-rgb: 107, 175, 183;
+
+  --success: #22c55e;
+  --success-bg: rgba(var(--success-rgb), 0.1);
+  --warning: #f59e0b;
+  --warning-bg: rgba(var(--warning-rgb), 0.1);
+  --error: #ef4444;
+  --error-bg: rgba(var(--error-rgb), 0.1);
+
+  /* — Effects — */
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05); /* User specified */
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px var(--accent-glow);
+}
+
+:root.dark {
+  /* — Dark Mode — */
+  --background: 222 47% 11%;      /* #0f172a */
+  --foreground: 210 40% 98%;      /* #f8fafc */
+
+  --card: 217 33% 17%;            /* #1e293b */
+  --card-foreground: 210 40% 98%;
+
+  --popover: 222 47% 11%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 183 36% 57%;         /* #6bafb7 (Keep Teal) */
+  --primary-foreground: 210 40% 98%;
+
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 183 36% 57%;
+  --accent-foreground: 222 47% 11%;
+
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 85% 60%;
+
+  --border: 216 43% 32%;          /* #2e4a73 (Lighter Blue-Gray) - User requested */
+  --input: 216 43% 32%;
+  --ring: 224 76% 48%;
+  
+  /* Sidebar Specific */
+  --sidebar-bg: 222 47% 11%;
+  --sidebar-fg: 210 40% 98%;
+  --sidebar-border: 216 43% 25%;
+
+  /* — Surface Colors (Dark) — */
+  --bg-surface: #1e293b;          /* Slightly Lighter */
+  --bg-surface-hover: #293850;
+  --bg-surface-active: #334a66;
+
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-default: #2e4a73;
+  --border-hover: #3d5e8f;
+  --border-active: #6bafb7;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
+
+  --accent-glow: rgba(107, 175, 183, 0.15);
+  --accent-glow-strong: rgba(107, 175, 183, 0.3);
+
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+}

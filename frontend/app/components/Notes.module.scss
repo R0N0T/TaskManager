@@ -74,7 +74,9 @@
   margin-bottom: 2rem;
   padding: 1.25rem;
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  padding: 1.25rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
 
   .titleInput,
@@ -165,9 +167,13 @@
   animation: slideUp 0.3s ease-out both;
 
   &:hover {
-    border-color: var(--border-hover);
     box-shadow: var(--shadow-md);
   }
+
+  &:nth-child(4n+1) { background: linear-gradient(135deg, hsl(var(--background)), hsl(210, 40%, 96%)); }
+  &:nth-child(4n+2) { background: linear-gradient(135deg, hsl(var(--background)), hsl(150, 40%, 96%)); }
+  &:nth-child(4n+3) { background: linear-gradient(135deg, hsl(var(--background)), hsl(30, 40%, 96%)); }
+  &:nth-child(4n+4) { background: linear-gradient(135deg, hsl(var(--background)), hsl(270, 40%, 96%)); }
 
   .noteHeader {
     display: flex;

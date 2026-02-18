@@ -1,0 +1,176 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  animation: fadeIn 0.4s ease-out;
+}
+
+.sectionHeader {
+  padding: 1.5rem;
+  border-bottom: 1px solid hsl(var(--border));
+  
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: hsl(var(--foreground));
+    margin: 0;
+    
+    svg {
+      color: hsl(var(--primary));
+    }
+  }
+}
+
+.sectionBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info {
+  h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    margin: 0 0 0.2rem 0;
+  }
+  p {
+    font-size: 0.9rem;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
+  }
+}
+
+.themeToggle {
+  display: flex;
+  background: hsl(var(--muted));
+  padding: 0.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid hsl(var(--border));
+}
+
+.themeBtn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+
+  &.active {
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    box-shadow: var(--shadow-sm);
+  }
+  
+  &:hover:not(.active) {
+    color: hsl(var(--foreground));
+  }
+}
+
+.divider {
+  height: 1px;
+  background: hsl(var(--border));
+}
+
+.toggleSwitch {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background: hsl(var(--muted));
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+  
+  &.on {
+    background: hsl(var(--primary));
+  }
+  
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  span {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: left 0.3s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  
+  &.on span {
+    left: 26px;
+  }
+}
+
+.dangerSection {
+  background: hsl(var(--card));
+  border: 1px solid hsla(var(--destructive), 0.3);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  
+  .sectionHeader {
+    background: hsla(var(--destructive), 0.1);
+    border-bottom: 1px solid hsla(var(--destructive), 0.1);
+    
+    h2 {
+      color: hsl(var(--destructive));
+      
+       svg {
+        color: hsl(var(--destructive));
+      }
+    }
+  }
+  
+  .sectionBody {
+    padding: 1.5rem;
+  }
+}
+
+.deleteBtn {
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid hsl(var(--destructive));
+  background: transparent;
+  color: hsl(var(--destructive));
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+
+  &:hover {
+    background: hsla(var(--destructive), 0.1);
+  }
+}

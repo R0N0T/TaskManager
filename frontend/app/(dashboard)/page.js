@@ -12,6 +12,8 @@ const features = [
   { icon: Bell, title: "Reminders", desc: "Never miss an important deadline", href: "/reminder" },
 ];
 
+import PageContainer from '@/app/components/layout/PageContainer';
+
 export default function Home() {
   const router = useRouter();
 
@@ -23,26 +25,28 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className={welcomeStyles.welcomeContainer}>
-      <div className={welcomeStyles.welcomeGlow} />
-      <h1 className={welcomeStyles.heading}>
-        Welcome to <span className={welcomeStyles.gradient}>Task Suite</span>
-      </h1>
-      <p className={welcomeStyles.subtitle}>
-        Your all-in-one productivity workspace
-      </p>
-      <div className={welcomeStyles.featureGrid}>
-        {features.map((feat) => (
-          <a key={feat.title} href={feat.href} className={welcomeStyles.featureCard}>
-            <div className={welcomeStyles.featureIcon}>
-              <feat.icon size={22} />
-            </div>
-            <h3>{feat.title}</h3>
-            <p>{feat.desc}</p>
-          </a>
-        ))}
+    <PageContainer>
+      <div className={welcomeStyles.welcomeContainer}>
+        <div className={welcomeStyles.welcomeGlow} />
+        <h1 className={welcomeStyles.heading}>
+          Welcome to <span className={welcomeStyles.gradient}>Task Suite</span>
+        </h1>
+        <p className={welcomeStyles.subtitle}>
+          Your all-in-one productivity workspace
+        </p>
+        <div className={welcomeStyles.featureGrid}>
+          {features.map((feat) => (
+            <a key={feat.title} href={feat.href} className={welcomeStyles.featureCard}>
+              <div className={welcomeStyles.featureIcon}>
+                <feat.icon size={22} />
+              </div>
+              <h3>{feat.title}</h3>
+              <p>{feat.desc}</p>
+            </a>
+          ))}
+        </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

@@ -92,7 +92,7 @@
 
 .completed {
   background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) !important;
-  color: white !important;
+  color: var(--primary-foreground) !important;
   box-shadow: 0 2px 8px var(--accent-glow);
 }
 
