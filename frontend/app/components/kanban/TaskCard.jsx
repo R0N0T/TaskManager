@@ -6,6 +6,8 @@ import { Clock, AlertCircle, Edit2, Trash2 } from 'lucide-react';
 import styles from './Kanban.module.scss';
 import { format } from 'date-fns';
 
+import { motion } from 'framer-motion';
+
 export default function TaskCard({ task, onEdit, onDelete }) {
     const { attributes, listeners, setNodeRef, transform } = useDraggable({
         id: task.id,
@@ -17,18 +19,25 @@ export default function TaskCard({ task, onEdit, onDelete }) {
     };
 
     const priorityColors = {
-        HIGH: '#ef4444',
-        MEDIUM: '#f59e0b',
-        LOW: '#10b981'
+        HIGH: 'var(--destructive)',
+        MEDIUM: 'var(--warning)',
+        LOW: 'var(--success)'
     };
 
     return (
-        <div 
+        <motion.div 
             ref={setNodeRef} 
             style={style} 
             {...listeners} 
             {...attributes} 
             className={styles.taskCard}
+            layoutId={task.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            whileHover={{ scale: 1.02, boxShadow: "var(--shadow-lg)" }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
         >
             <div className={styles.cardHeader}>
                 <span className={styles.priority} style={{ backgroundColor: priorityColors[task.priority] || '#6b7280' }}>
@@ -36,6 +45,7 @@ export default function TaskCard({ task, onEdit, onDelete }) {
                 </span>
                 <div className={styles.actions}>
                     <button 
+                        onPointerDown={(e) => e.stopPropagation()}
                         onClick={(e) => { e.stopPropagation(); onEdit(task); }} 
                         className={styles.actionBtn}
                         title="Edit Task"
@@ -43,6 +53,7 @@ export default function TaskCard({ task, onEdit, onDelete }) {
                         <Edit2 size={14} />
                     </button>
                     <button 
+                         onPointerDown={(e) => e.stopPropagation()}
                         onClick={(e) => { e.stopPropagation(); onDelete(task.id); }} 
                         className={`${styles.actionBtn} ${styles.deleteBtn}`}
                         title="Delete Task"
@@ -59,6 +70,6 @@ export default function TaskCard({ task, onEdit, onDelete }) {
                     {format(new Date(task.dueDate), 'MMM d, yyyy')}
                 </div>
             )}
-        </div>
+        </motion.div>
     );
 }

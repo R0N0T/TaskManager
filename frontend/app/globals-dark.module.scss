@@ -1,7 +1,7 @@
-.appDark {
-  background: var(--bg-primary);
+.app {
+  background: hsl(var(--background));
   min-height: 100vh;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   font-family: var(--font-sans);
   display: flex;
 }
@@ -10,14 +10,18 @@
   display: flex;
   width: 100%;
   min-height: 100vh;
+  position: relative;
 
   .child {
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-left: var(--sidebar-width);
+    margin-left: var(--sidebar-width, 260px); /* Fallback */
     min-height: 100vh;
     animation: fadeIn 0.4s ease-out;
+    background: hsl(var(--background));
+    position: relative;
+    z-index: 1;
   }
 }
 

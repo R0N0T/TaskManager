@@ -11,7 +11,7 @@
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5),
-              0 0 0 1px rgba(139, 92, 246, 0.15);
+              0 0 0 1px rgba(var(--primary-rgb), 0.15);
   z-index: 9999;
   overflow: hidden;
   animation: toastSlideIn 0.35s ease-out;
@@ -36,8 +36,8 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-md);
-  background: rgba(139, 92, 246, 0.15);
-  color: var(--accent-primary);
+  background: rgba(var(--primary-rgb), 0.15);
+  color: var(--primary);
 }
 
 .content {

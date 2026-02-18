@@ -10,6 +10,7 @@ import { apiClient } from '../../utils/apiClient';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { useAuth } from '../../context/AuthContext';
+import { motion } from 'framer-motion';
 
 const COLUMNS = [
     { id: 'TODO', title: 'To Do' },
@@ -176,9 +177,14 @@ export default function KanbanBoard() {
                     <Plus size={18} /> Add Task
                 </button>
             </div>
-            <div className={styles.board}>
+            <motion.div 
+                className={styles.board}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
                 {COLUMNS.map(col => (
-                    <div key={col.id} className={styles.columnContainer}>
+                    <div key={col.id} className={styles.columnContainer} data-id={col.id}>
                         <div className={styles.columnHeader}>
                             <h3 className={styles.columnTitle}>
                                 {col.title}
@@ -196,7 +202,7 @@ export default function KanbanBoard() {
                 <DragOverlay>
                     {activeId ? <TaskCard task={activeTask} /> : null}
                 </DragOverlay>
-            </div>
+            </motion.div>
 
             <TaskModal 
                 isOpen={isModalOpen}

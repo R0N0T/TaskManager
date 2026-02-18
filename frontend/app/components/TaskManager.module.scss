@@ -80,7 +80,9 @@
 .taskCard {
   padding: 1.25rem;
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  padding: 1.25rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   transition: all var(--transition-default);
   animation: slideUp 0.3s ease-out both;
@@ -88,6 +90,10 @@
   &:hover {
     border-color: var(--border-hover);
     box-shadow: var(--shadow-md);
+  }
+
+  &:nth-child(even) {
+    background: var(--bg-surface-hover);
   }
 }
 
@@ -133,7 +139,7 @@
 
 .deleteBtn:hover {
   color: var(--error);
-  border-color: rgba(239, 68, 68, 0.3);
+  border-color: rgba(var(--error-rgb), 0.3);
   background: var(--error-bg);
 }
 

@@ -62,10 +62,10 @@ export default function ProfileDropdown() {
                         <p className={styles.email}>{user?.email || 'No email'}</p>
                     </div>
                     <div className={styles.menu}>
-                        <button className={styles.menuItem}>
+                        <button className={styles.menuItem} onClick={() => { setIsOpen(false); router.push('/profile'); }}>
                             <User size={16} /> Profile
                         </button>
-                        <button className={styles.menuItem}>
+                        <button className={styles.menuItem} onClick={() => { setIsOpen(false); router.push('/settings'); }}>
                             <Settings size={16} /> Settings
                         </button>
                         <div className={styles.divider}></div>

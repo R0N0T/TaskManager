@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../styles/globals.scss";
 import AuthProviderWrapper from './context/Providers';
+import { Providers } from "./providers";
 import NotificationToastWrapper from './components/NotificationToastWrapper';
 
 const inter = Inter({
@@ -15,11 +16,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.variable}>
         <AuthProviderWrapper>
-          {children}
-          <NotificationToastWrapper />
+          <Providers>
+            {children}
+            <NotificationToastWrapper />
+          </Providers>
         </AuthProviderWrapper>
       </body>
     </html>
